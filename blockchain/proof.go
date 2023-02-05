@@ -52,7 +52,7 @@ func NewProof(b *Block) *ProofOfWork {
 	// the subtracts the difficulty from it
 	// then use the target to shift the number of bytes over by ...
 	// lsh = left shift
-	target.Lsh(target, uint(265-Difficulty))
+	target.Lsh(target, uint(256-Difficulty))
 
 	pow := &ProofOfWork{b, target}
 	return pow
@@ -82,7 +82,7 @@ func (pow *ProofOfWork) Run() (int, []byte) {
 		// prepare data
 		data := pow.InitData(nonce)
 		// then hash to sha256
-		hash := sha256.Sum256(data)
+		hash = sha256.Sum256(data)
 		fmt.Printf("Hash: \r%x", hash)
 		// then convert the hash to  a big int
 		intHash.SetBytes(hash[:])

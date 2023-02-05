@@ -83,7 +83,7 @@ func (pow *ProofOfWork) Run() (int, []byte) {
 		data := pow.InitData(nonce)
 		// then hash to sha256
 		hash := sha256.Sum256(data)
-		fmt.Printf("\r%x", hash)
+		fmt.Printf("Hash: \r%x", hash)
 		// then convert the hash to  a big int
 		intHash.SetBytes(hash[:])
 		// then compare the int to the target
@@ -93,6 +93,9 @@ func (pow *ProofOfWork) Run() (int, []byte) {
 			nonce++
 		}
 	}
+	fmt.Println()
+	fmt.Println(nonce)
+	fmt.Println(hash)
 	fmt.Println()
 	return nonce, hash[:]
 }

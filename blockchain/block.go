@@ -1,5 +1,7 @@
 package blockchain
 
+// import "fmt"
+
 // a blockchain contains multiple blocks
 //
 
@@ -48,6 +50,9 @@ func CreateBlock(data string, prevHash []byte) *Block {
 	// run the pow algorithm
 	pow := NewProof(block)
 	nonce, hash := pow.Run()
+	// fmt.Println(nonce)
+	// fmt.Println(hash)
+	// fmt.Println()
 
 	block.Hash = hash[:]
 	block.Nonce = nonce

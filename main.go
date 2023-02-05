@@ -28,15 +28,18 @@ import (
 func main() {
 	chain := blockchain.InitBlockchain()
 	chain.AddBlock("First block")
+	fmt.Println()
 	chain.AddBlock("Second block")
+	fmt.Println()
 	chain.AddBlock("Third block")
+	fmt.Println()
 
 	for _, block := range chain.Blocks {
 		// string interpolation
 		fmt.Printf("Previous hash: %x\n", block.PrevHash)
 		fmt.Printf("Block data: %s\n", block.Data)
 		fmt.Printf("Block hash: %x\n", block.Hash)
-
+		// fmt.Printf("Block Nonce: %x\n", block.Nonce)
 		// Get a new proof for the block
 		pow := blockchain.NewProof(block)
 		// convert the response of the validation -a boolean- to string format

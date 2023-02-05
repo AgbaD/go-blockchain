@@ -15,11 +15,13 @@ package main
 // the imports
 // a set of tools or libraries to make the task faster
 
-// the imports to github checks online first 
+// the imports to github checks online first
 // then it checks the local commits
 
 import (
 	"fmt"
+	"strconv"
+
 	"github.com/AgbaD/go-blockchain/blockchain"
 )
 
@@ -34,5 +36,11 @@ func main() {
 		fmt.Printf("Previous hash: %x\n", block.PrevHash)
 		fmt.Printf("Block data: %s\n", block.Data)
 		fmt.Printf("Block hash: %x\n", block.Hash)
+
+		// Get a new proof for the block
+		pow := blockchain.NewProof(block)
+		// convert the response of the validation -a boolean- to string format
+		fmt.Printf("POW: %s\n", strconv.FormatBool(pow.Validate()))
+		fmt.Println()
 	}
 }

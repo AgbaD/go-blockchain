@@ -38,7 +38,7 @@ import (
 // in a real blockchain, it has to increase overtime
 // due to increase in number of miners growing
 // and also computation power
-const Difficulty = 12
+const Difficulty = 18
 
 type ProofOfWork struct {
 	Block  *Block
@@ -76,7 +76,7 @@ func (pow *ProofOfWork) Run() (int, []byte) {
 	var intHash big.Int
 	var hash [32]byte
 
-	nonce := -0
+	nonce := 0
 
 	for nonce < math.MaxInt64 {
 		// prepare data
@@ -84,10 +84,8 @@ func (pow *ProofOfWork) Run() (int, []byte) {
 		// then hash to sha256
 		hash := sha256.Sum256(data)
 		fmt.Printf("\r%x", hash)
-
 		// then convert the hash to  a big int
 		intHash.SetBytes(hash[:])
-
 		// then compare the int to the target
 		if intHash.Cmp(pow.Target) == -1 {
 			break

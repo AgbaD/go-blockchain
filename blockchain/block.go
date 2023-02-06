@@ -1,16 +1,10 @@
 package blockchain
 
-// import "fmt"
-
-// a blockchain contains multiple blocks
-//
-
-type BlockChain struct {
-	// array of pointers to blocks
-	// By making the first letter upper case
-	// it makes the field public
-	Blocks []*Block
-}
+import (
+	"bytes"
+	"encoding/gob"
+	"log"
+)
 
 // a struct (a data structure to represent to represent our block)
 type Block struct {
@@ -59,21 +53,40 @@ func CreateBlock(data string, prevHash []byte) *Block {
 	return block
 }
 
-// any blockchain struct instance can use this function
-func (chain *BlockChain) AddBlock(data string) {
-	prevBlock := chain.Blocks[len(chain.Blocks)-1]
-	block := CreateBlock(data, prevBlock.Hash)
-	chain.Blocks = append(chain.Blocks, block)
-}
-
 // returns a pointer to a block
 func Genesis() *Block {
 	return CreateBlock("Genesis", []byte{})
 }
 
-// returns a pointer to the blockchain
-func InitBlockchain() *BlockChain {
-	// Takes an array of blocks pointers
-	// with a call to the genesis function as the first element of the array
-	return &BlockChain{[]*Block{Genesis()}}
+
+// Badger DB only accepts arrays or slices of bytes
+// we need a way to convert our block from and to the 
+// right formats
+
+func(b *Block) Serialize() []byte{
+	// a resolve
+	var res bytes.Buffer
+	// we create an encoder on the resolve
+	encoder := gob.NewEncoder(&res)
+	err := encoder.Encode(b) 
+	// function returns an error so error handling
+	Handle(err)
+	// Byte representation of the block
+	return res.Bytes()
 }
+
+func Deserialize(data []byte ) *Block{
+	var block Block
+	decoder := gob.NewDecoder(bytes.NewReader(data))
+	err := decoder.Decode(&block)
+	Handle(err)
+	// Byte representation of the block
+	return &block
+}
+
+func Handle(err error) {
+	if err != nil {
+		log.Panic(err)
+	}
+}
+

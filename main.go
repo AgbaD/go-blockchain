@@ -33,7 +33,7 @@ type CommandLine struct {
 }
 
 func (cli *CommandLine) printUsage() {
-	fmt.Println("Usage:")
+	fmt.Println("\n\nUsage:")
 	fmt.Println("add -block BLOCK_DATA - add a block to the chain")
 	fmt.Println("print - Prints the blocks on the chain ")
 
@@ -53,9 +53,8 @@ func (cli *CommandLine) addBlock(data string) {
 }
 
 func (cli *CommandLine) printChain() {
-	iter := cli.Blockchain.Iterator()
-	for {
-		block := iter.Next()
+	fmt.Println(cli.Blockchain.Blocks)
+	for _, block := range cli.Blockchain.Blocks {
 
 		// string interpolation
 		fmt.Printf("Previous hash: %x\n", block.PrevHash)
@@ -137,9 +136,10 @@ func main() {
 	defer os.Exit(0)
 	chain := blockchain.InitBlockchain()
 	// only executes if the go channel is able to exit properly
-	defer chain.Database.Close()
 
 	cli := CommandLine{chain}
 	cli.Run()
 
 }
+
+
